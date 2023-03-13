@@ -31,8 +31,8 @@
         },
       });
 
-      window["ReactNativeWebView"] &&
-        window["ReactNativeWebView"].postMessage(params);
+      // window["ReactNativeWebView"] &&
+      //   window["ReactNativeWebView"].postMessage(params);
 
       const btnClick = document.getElementById("btn-click");
 
@@ -41,6 +41,37 @@
       });
 
       console.log("End 2");
+
+      function main() {
+        console.debug("window.my", window.my);
+
+        if (!window.my) {
+          throw new Error(
+            "main function has to wait for the Tini app framework ready event"
+          );
+        }
+
+        // handle messages from tini app:
+        window.addEventListener("message", (e) => {
+          alert(JSON.stringify(e.data)); // this will alert "pong" message
+        });
+
+      }
+      // check if jsapi `my` is available
+      // if not, wait until the event `TiniAppJSBridgeReady` is emitted
+      try {
+        if (window.my) {
+          main();
+        } else {
+          window.addEventListener("TiniAppJSBridgeReady", () => {
+            // window.my is available here
+            main();
+          });
+        }
+      } catch (e) {
+        console.error(e);
+        // your code to handle errors goes here
+      }
     </script>
   </body>
 </html>
