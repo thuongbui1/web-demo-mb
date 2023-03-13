@@ -9,38 +9,102 @@
   <body>
     <h1>Demo here</h1>
     <button id="btn-click">Open Payment MB</button>
+    <br />
+    <button onclick="handleDefault">Test Open Default Payment MB</button>
+    <button id="btn-default-click" onclick="handleDefault">Open Default Payment MB</button>
     <script>
-      console.log("start");
-      const params = JSON.stringify({
-        type: "PAYMENT_HUB_TRANSACTION",
-        data: {
-          merchant: {
-            code: "MBAL",
-            name: "Bảo hiểm nhân thọ MB AGEAS LIFE",
-          },
-          type: {
-            code: "BHUT",
-            name: "Mua bảo hiểm ung thư",
-            allowCard: true,
-          },
-          id: "AJX014TUYI1121",
-          amount: 1000000,
-          description: "Mua bao hiem ung thu MBAL 615000",
-          successMessage:
-            "Cám ơn bạn đã mua bảo hiểm. MBAL sẽ liên lạc lại với bạn trong vòng 24h",
-        },
-      });
+      const APP_ID = 'vn.tiki.apptestmweb';
 
-      window["ReactNativeWebView"] &&
-        window["ReactNativeWebView"].postMessage(params);
+      const handleParseData = () => {
+        try {
+          return JSON.parse(window?.localStorage?.getItem(APP_ID) || '') || {};
+        } catch (error) {
+          return {};
+        }
+      }
+      
+      const handlePayment = () => {
+        const { paymentData = {} } = handleParseData();
+        const params = JSON.stringify(paymentData);
+        console.warn('test params', params, paymentData);
+
+        window["ReactNativeWebView"] &&
+          window["ReactNativeWebView"].postMessage(params);
+      }
+
+        const handleDefault = () => {
+          const params = JSON.stringify({
+            type: "PAYMENT_HUB_TRANSACTION",
+            data: {
+              merchant: {
+                code: "MBAL",
+                name: "Bảo hiểm nhân thọ MB AGEAS LIFE",
+              },
+              type: {
+                code: "BHUT",
+                name: "Mua bảo hiểm ung thư",
+                allowCard: true,
+              },
+              id: "AJX014TUYI1121",
+              amount: 1000000,
+              description: "Mua bao hiem ung thu MBAL 615000",
+              successMessage:
+                "Cám ơn bạn đã mua bảo hiểm. MBAL sẽ liên lạc lại với bạn trong vòng 24h",
+            },
+          });
+
+          window["ReactNativeWebView"] &&
+            window["ReactNativeWebView"].postMessage(params);
+        }
 
       const btnClick = document.getElementById("btn-click");
+      const btnDefault = document.getElementById("btn-default-click");
 
       btnClick.addEventListener("click", () => {
         console.log("click");
+        handlePayment();
+      });
+
+
+      btnDefault.addEventListener("click", () => {
+        console.log("click default");
+        handleDefault();
       });
 
       console.log("End 2");
+
+      function main() {
+        console.debug("window.my", window.my);
+
+        if (!window.my) {
+          throw new Error(
+            "main function has to wait for the Tini app framework ready event"
+          );
+        }
+
+        my.postMessage('init_done');
+
+        // handle messages from tini app:
+        window.addEventListener("message", (e) => {
+          alert(JSON.stringify(e.data)); // this will alert "pong" message
+        });
+
+      }
+      // check if jsapi `my` is available
+      // if not, wait until the event `TiniAppJSBridgeReady` is emitted
+      // try {
+      //   if (window.my) {
+      //     main();
+      //   } else {
+      //     window.addEventListener("TiniAppJSBridgeReady", () => {
+      //       // window.my is available here
+      //       main();
+      //     });
+      //   }
+      // } catch (e) {
+      //   console.error(e);
+      //   // your code to handle errors goes here
+      // }
     </script>
   </body>
 </html>
