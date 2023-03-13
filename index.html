@@ -10,8 +10,7 @@
     <h1>Demo here</h1>
     <button id="btn-click">Open Payment MB</button>
     <br />
-    <button onclick="handleDefault">Test Open Default Payment MB</button>
-    <button id="btn-default-click" onclick="handleDefault">Open Default Payment MB</button>
+    <button id="btn-default-click" >Open Default Payment MB</button>
     <script>
       const APP_ID = 'vn.tiki.apptestmweb';
 
@@ -26,6 +25,7 @@
       const handlePayment = () => {
         const { paymentData = {} } = handleParseData();
         const params = JSON.stringify(paymentData);
+        alert(params);
         console.warn('test params', params, paymentData);
 
         window["ReactNativeWebView"] &&
@@ -73,38 +73,6 @@
 
       console.log("End 2");
 
-      function main() {
-        console.debug("window.my", window.my);
-
-        if (!window.my) {
-          throw new Error(
-            "main function has to wait for the Tini app framework ready event"
-          );
-        }
-
-        my.postMessage('init_done');
-
-        // handle messages from tini app:
-        window.addEventListener("message", (e) => {
-          alert(JSON.stringify(e.data)); // this will alert "pong" message
-        });
-
-      }
-      // check if jsapi `my` is available
-      // if not, wait until the event `TiniAppJSBridgeReady` is emitted
-      // try {
-      //   if (window.my) {
-      //     main();
-      //   } else {
-      //     window.addEventListener("TiniAppJSBridgeReady", () => {
-      //       // window.my is available here
-      //       main();
-      //     });
-      //   }
-      // } catch (e) {
-      //   console.error(e);
-      //   // your code to handle errors goes here
-      // }
     </script>
   </body>
 </html>
