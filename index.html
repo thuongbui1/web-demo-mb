@@ -4,17 +4,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Tiki</title>
   </head>
   <body>
-    <h1>Demo here</h1>
-    <button id="btn-click">Open Payment MB</button>
-    <br />
-    <button id="btn-default-click" >Open Default Payment MB</button>
     <script>
-       var postMessageCache = window["ReactNativeWebView"];
-
-      const APP_ID = 'vn.tiki.apptestmweb';
+      var WindowNative = window["ReactNativeWebView"];
+      const APP_ID = 'tiki.vip.test';
 
       const handleParseData = () => {
         try {
@@ -24,58 +19,11 @@
         }
       }
       
-      const handlePayment = () => {
-        const { paymentData = {} } = handleParseData();
+      const { paymentData = {} } = handleParseData();
+      if (paymentData.type) {
         const params = JSON.stringify(paymentData);
-        alert(params);
-        alert(JSON.stringify(postMessageCache));
-
-        console.warn('test params', params, paymentData);
-
-          postMessageCache && postMessageCache?.postMessage?.(params)
+        WindowNative && WindowNative?.postMessage?.(params)
       }
-
-        const handleDefault = () => {
-          const params = JSON.stringify({
-            type: "PAYMENT_HUB_TRANSACTION",
-            data: {
-              merchant: {
-                code: "MBAL",
-                name: "Bảo hiểm nhân thọ MB AGEAS LIFE",
-              },
-              type: {
-                code: "BHUT",
-                name: "Mua bảo hiểm ung thư",
-                allowCard: true,
-              },
-              id: "AJX014TUYI1121",
-              amount: 1000000,
-              description: "Mua bao hiem ung thu MBAL 615000",
-              successMessage:
-                "Cám ơn bạn đã mua bảo hiểm. MBAL sẽ liên lạc lại với bạn trong vòng 24h",
-            },
-          });
-
-          window["ReactNativeWebView"] &&
-            window["ReactNativeWebView"].postMessage(params);
-        }
-
-      const btnClick = document.getElementById("btn-click");
-      const btnDefault = document.getElementById("btn-default-click");
-
-      btnClick.addEventListener("click", () => {
-        console.log("click");
-        handlePayment();
-      });
-
-
-      btnDefault.addEventListener("click", () => {
-        console.log("click default");
-        handleDefault();
-      });
-
-      console.log("End 2");
-
     </script>
   </body>
 </html>
