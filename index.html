@@ -10,37 +10,29 @@
     <h1>Demo here</h1>
     <button id="btn-click">Open Payment MB</button>
     <script>
-      console.log("start");
-      console.log("window.location", window.location);
-      console.log("window", window);
+      const APP_ID = 'vn.tiki.apptestmweb';
 
-      const params = JSON.stringify({
-        type: "PAYMENT_HUB_TRANSACTION",
-        data: {
-          merchant: {
-            code: "MBAL",
-            name: "Bảo hiểm nhân thọ MB AGEAS LIFE",
-          },
-          type: {
-            code: "BHUT",
-            name: "Mua bảo hiểm ung thư",
-            allowCard: true,
-          },
-          id: "AJX014TUYI1121",
-          amount: 1000000,
-          description: "Mua bao hiem ung thu MBAL 615000",
-          successMessage:
-            "Cám ơn bạn đã mua bảo hiểm. MBAL sẽ liên lạc lại với bạn trong vòng 24h",
-        },
-      });
+      const handleParseData = () => {
+        try {
+          return JSON.parse(window?.localStorage?.getItem(APP_ID) || '') || {};
+        } catch (error) {
+          return {};
+        }
+      }
+      
+      const handlePayment = () => {
+        const { paymentData = {} } = handleParseData();
+        const params = JSON.stringify(paymentData);
 
-      // window["ReactNativeWebView"] &&
-      //   window["ReactNativeWebView"].postMessage(params);
+        window["ReactNativeWebView"] &&
+          window["ReactNativeWebView"].postMessage(params);
+      }
 
       const btnClick = document.getElementById("btn-click");
 
       btnClick.addEventListener("click", () => {
         console.log("click");
+        handlePayment();
       });
 
       console.log("End 2");
