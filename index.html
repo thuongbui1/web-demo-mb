@@ -11,6 +11,8 @@
     <button id="btn-click">Open Payment MB</button>
     <script>
       console.log("start");
+      console.log(window.location.search);
+
       const params = JSON.stringify({
         type: "PAYMENT_HUB_TRANSACTION",
         data: {
@@ -50,6 +52,8 @@
             "main function has to wait for the Tini app framework ready event"
           );
         }
+
+        my.postMessage('init_done');
 
         // handle messages from tini app:
         window.addEventListener("message", (e) => {
