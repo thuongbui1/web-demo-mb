@@ -23,6 +23,7 @@
       const handlePayment = () => {
         const { paymentData = {} } = handleParseData();
         const params = JSON.stringify(paymentData);
+        console.warn('test params', params, paymentData);
 
         window["ReactNativeWebView"] &&
           window["ReactNativeWebView"].postMessage(params);
