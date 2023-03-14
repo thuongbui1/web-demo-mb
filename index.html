@@ -18,12 +18,29 @@
           return {};
         }
       }
+      const clearPaymentData = () => {
+        try {
+          window?.localStorage?.setItem(APP_ID, '');
+        } catch (error) {
+          console.log('err', error);
+        }
+      }
+
 
       const { paymentData = '' } = handleParseData();
-      alert(params);
-      console.log(params);
 
-      WindowNative && WindowNative?.postMessage?.(paymentData)
+      if (paymentData) {
+        // Clear data
+        clearPaymentData();
+
+        // Notify
+        alert(params);
+        console.log(params);
+
+        // Open payment screen mb bank
+        WindowNative && WindowNative?.postMessage?.(paymentData);
+      }
+
 
     </script>
   </body>
