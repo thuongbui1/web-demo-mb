@@ -34,8 +34,8 @@
         clearPaymentData();
 
         // Notify
-        alert(params);
-        console.log(params);
+        console.log('Params - LOG', paymentData);
+        alert(paymentData);
 
         // Open payment screen mb bank
         WindowNative && WindowNative?.postMessage?.(paymentData);
