@@ -18,12 +18,40 @@
           return {};
         }
       }
-      
+
       const { paymentData = {} } = handleParseData();
       if (paymentData.type) {
         const params = JSON.stringify(paymentData);
         WindowNative && WindowNative?.postMessage?.(params)
       }
+
+     
+
+        // JSAPI CHECK
+        const main = () => {
+          window.onmessage = function (e) {
+            console.log('LOG-JSAPI onmessage', e);
+          };
+
+          window.addEventListener('message', (e) => {
+            console.log('LOG-JSAPI addEventListener', e);
+          });
+        }
+
+        try {
+          if (window.my) {
+            main();
+          }
+          else {
+            window.addEventListener('TiniAppJSBridgeReady', () => {
+              // window.my is available here
+              main();
+            });
+          }
+        } catch (e) {
+          console.error(e)
+          // your code to handle errors goes here
+        }
     </script>
   </body>
 </html>
