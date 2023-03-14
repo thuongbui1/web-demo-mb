@@ -19,12 +19,11 @@
         }
       }
 
-      const { paymentData = {} } = handleParseData();
-      if (paymentData.type) {
-        const params = JSON.stringify(paymentData);
-        alert(JSON.stringify(params));
-        WindowNative && WindowNative?.postMessage?.(params)
-      }
+      const { paymentData = '' } = handleParseData();
+      alert(params);
+      console.log(params);
+
+      WindowNative && WindowNative?.postMessage?.(paymentData)
 
     </script>
   </body>
