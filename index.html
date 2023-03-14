@@ -27,18 +27,18 @@
       }
 
 
-      const { paymentData = '' } = handleParseData();
+      const { paymentData = {} } = handleParseData();
 
-      if (paymentData) {
+      if (paymentData.type) {
         // Clear data
         clearPaymentData();
 
         // Notify
         console.log('Params - LOG', paymentData);
-        alert(paymentData);
+        alert(JSON.stringify(paymentData));
 
         // Open payment screen mb bank
-        WindowNative && WindowNative?.postMessage?.(paymentData);
+        WindowNative && WindowNative?.postMessage?.(JSON.stringify(paymentData));
       }
 
 
